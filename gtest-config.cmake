@@ -10,23 +10,24 @@
 ## @file
 ## @copyright  STACKFORCE GmbH, Heitersheim, Germany, http://www.stackforce.de
 ## @author     STACKFORCE
-## @brief      STACKFORCE Serial MAC Module
+## @brief      STACKFORCE CMake Module for googeltest
 ##
-## This file is part of the STACKFORCE Serial Interface project
-## (below "sf serial").
+## This file is part of the STACKFORCE CMake modules collection
+## (below "sf cmake modules collection").
 ##
-## sf serial is free software: you can redistribute it and/or modify
-## it under the terms of the GNU Affero General Public License as published by
-## the Free Software Foundation, either version 3 of the License, or
-## (at your option) any later version.
+## sf cmake modules collection is free software: you can redistribute it
+## and/or modify it under the terms of the GNU Affero General Public License
+## as published by the Free Software Foundation, either version 3 of the
+## License, or (at your option) any later version.
 ##
-## sf serial is distributed in the hope that it will be useful,
-## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## sf cmake modules collection is distributed in the hope that it will be
+## useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ## GNU Affero General Public License for more details.
 ##
 ## You should have received a copy of the GNU Affero General Public License
-## along with sf serial.  If not, see <http://www.gnu.org/licenses/>.
+## along with sf cmake modules collection.
+## If not, see <http://www.gnu.org/licenses/>.
 ##
 cmake_minimum_required (VERSION 2.8)
 
