@@ -95,22 +95,36 @@ else()
     add_library(libgmock IMPORTED STATIC GLOBAL)
     add_dependencies(libgmock googletest)
 
+    set( GTEST_INCLUDE_GOOGLETEST "${source_dir}/googletest/include/")
+    set( GTEST_INCLUDE_GOOGLEMOCK "${source_dir}/googlemock/include/")
     # Set gmock properties
     ExternalProject_Get_Property(googletest source_dir binary_dir)
     set_target_properties(libgmock PROPERTIES
         "IMPORTED_LOCATION" "${binary_dir}/googlemock/libgmock.a"
         "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
         # This does not work as intended
-        #"INTERFACE_INCLUDE_DIRECTORIES" "${source_dir}/googletest/include"
-        #"INTERFACE_INCLUDE_DIRECTORIES" "${source_dir}/googlemock/include/"
+        #"INTERFACE_INCLUDE_DIRECTORIES" "${GTEST_INCLUDE_GOOGLETEST}"
+        #"INTERFACE_INCLUDE_DIRECTORIES" "${GTEST_INCLUDE_GOOGLEMOCK}"
         )
 
-     include_directories("${source_dir}/googletest/include/")
-     include_directories("${source_dir}/googlemock/include/")
+    include_directories("${GTEST_INCLUDE_GOOGLETEST}")
+    include_directories("${GTEST_INCLUDE_GOOGLEMOCK}")
 
-     # Let other cmake targets know where to find the header files.
-     set_property(TARGET libgmock APPEND PROPERTY INTERFACE_INCLUDE_DIRECTORIES
-                 ${source_dir}/googletest/include
-                 ${source_dir}/googlemock/include)
+    # CMake seems to demand that the directories referenced by the
+    # INTERFACE_INCLUDE_DIRECTORIES property of an IMPORTED target can be
+    # found at configure-time. This is quite unhelpful if those directories
+    # are only generated generated as part of the build.
+    # This is a Workaround proposed in
+    # bug report:
+    # http://public.kitware.com/Bug/bug_relationship_graph.php?bug_id=14495
+    # See also:
+    # http://public.kitware.com/Bug/view.php?id=15052&nbn=2
+    file(MAKE_DIRECTORY "${GTEST_INCLUDE_GOOGLETEST}")
+    file(MAKE_DIRECTORY "${GTEST_INCLUDE_GOOGLEMOCK}")
+    # Let other cmake targets know where to find the header files.
+    set_property(TARGET libgmock APPEND PROPERTY INTERFACE_INCLUDE_DIRECTORIES
+                "${GTEST_INCLUDE_GOOGLETEST}"
+                "${GTEST_INCLUDE_GOOGLEMOCK}")
+
 
 endif()
