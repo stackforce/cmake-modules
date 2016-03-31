@@ -100,10 +100,17 @@ else()
     set_target_properties(libgmock PROPERTIES
         "IMPORTED_LOCATION" "${binary_dir}/googlemock/libgmock.a"
         "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
-        #    "INTERFACE_INCLUDE_DIRECTORIES" "${source_dir}/include"
+        # This does not work as intended
+        #"INTERFACE_INCLUDE_DIRECTORIES" "${source_dir}/googletest/include"
+        #"INTERFACE_INCLUDE_DIRECTORIES" "${source_dir}/googlemock/include/"
         )
 
+     include_directories("${source_dir}/googletest/include/")
+     include_directories("${source_dir}/googlemock/include/")
 
-    include_directories("${source_dir}/googletest/include/")
-    include_directories("${source_dir}/googlemock/include/")
+     # Let other cmake targets know where to find the header files.
+     set_property(TARGET libgmock APPEND PROPERTY INTERFACE_INCLUDE_DIRECTORIES
+                 ${source_dir}/googletest/include
+                 ${source_dir}/googlemock/include)
+
 endif()
