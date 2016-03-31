@@ -31,10 +31,10 @@
 ##
 cmake_minimum_required (VERSION 2.8)
 
-if(gtest_FOUND)
-    MESSAGE(STATUS "gtest found!")
+if(TARGET googletest)
+    MESSAGE(STATUS "googletest already exists!")
 else()
-    MESSAGE(STATUS "Make gtest!")
+    MESSAGE(STATUS "Add googletest")
     find_package(Threads REQUIRED)
 
     # Enable ExternalProject CMake module
