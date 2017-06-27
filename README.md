@@ -22,6 +22,7 @@ To use a find module package (e.g. GLib2) add a line like this to your CMakeList
 
     find_package(GLib2)
 
-Other modules like the ColorMessages one that just define some functions can be used directly:
+Other modules like the ColorMessages one that just define some functions have to be included before they can be used:
 
+    include(ColorMessages)
     colormessage(MORE_IMPORTANT "Searching required external projects...")
