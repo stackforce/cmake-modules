@@ -44,7 +44,7 @@ if(NOT SERIALPORT_LIB)
     message(STATUS "Serialport: Project will be downloaded and built")
 
     ExternalProject_Add(serialport
-        GIT_REPOSITORY "https://git.stackforce.de/libserialport.git"
+        GIT_REPOSITORY "git://sigrok.org/libserialport"
         GIT_TAG "0c3f38b81b8968d78806a7a41ed351a870882b5e"
         UPDATE_DISCONNECTED 1
         CONFIGURE_COMMAND ./autogen.sh && ./configure
