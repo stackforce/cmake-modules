@@ -29,7 +29,8 @@
 ## along with sf cmake modules collection.
 ## If not, see <http://www.gnu.org/licenses/>.
 ##
-cmake_minimum_required (VERSION 2.8)
+
+cmake_minimum_required(VERSION 3.2)
 
 if(TARGET googletest)
     MESSAGE(STATUS "googletest already exists!")
@@ -56,37 +57,13 @@ else()
         set(GTEST_PATCH_COMMAND)
     endif()
 
-    if(${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} VERSION_LESS "3.2")
-        message(STATUS "CMake version ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}")
-        message(STATUS "Retarded CMake distributor detected. Are you using ubuntu?")
-
-        ExternalProject_Add(googletest   # Name for custom target
-
-            GIT_REPOSITORY ${GTEST_GIT_REPOSITORY}
-
-            GIT_TAG ${GTEST_GIT_TAG}
-
-            PATCH_COMMAND ${GTEST_PATCH_COMMAND}
-
-            INSTALL_COMMAND ""
-            )
-    else()
-        message(STATUS "CMake version ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}")
-
-        ExternalProject_Add(googletest   # Name for custom target
-
-            GIT_REPOSITORY ${GTEST_GIT_REPOSITORY}
-
-            GIT_TAG ${GTEST_GIT_TAG}
-
-            # Never update automatically from the remote repository
-            UPDATE_DISCONNECTED 1
-
-            PATCH_COMMAND ${GTEST_PATCH_COMMAND}
-
-            INSTALL_COMMAND ""
-            )
-    endif()
+    ExternalProject_Add(googletest   # Name for custom target
+        GIT_REPOSITORY ${GTEST_GIT_REPOSITORY}
+        GIT_TAG ${GTEST_GIT_TAG}
+        UPDATE_DISCONNECTED 1
+        PATCH_COMMAND ${GTEST_PATCH_COMMAND}
+        INSTALL_COMMAND ""
+    )
 
     ExternalProject_Get_Property(googletest source_dir)
     MESSAGE(STATUS "google source_dir is:\n " ${source_dir} )
