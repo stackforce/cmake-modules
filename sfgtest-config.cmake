@@ -81,7 +81,7 @@ else()
     # CMake seems to demand that the directories referenced by the
     # INTERFACE_INCLUDE_DIRECTORIES property of an IMPORTED target can be
     # found at configure-time. This is quite unhelpful if those directories
-    # are only generated generated as part of the build.
+    # are only generated as part of the build.
     # This is a Workaround proposed in
     # bug report:
     # http://public.kitware.com/Bug/bug_relationship_graph.php?bug_id=14495
