@@ -9,7 +9,8 @@
 ##
 ## @file
 ## @copyright  STACKFORCE GmbH, Heitersheim, Germany, http://www.stackforce.de
-## @author     STACKFORCE
+## @author     Lars Moellendorf
+## @author     Adrian Antonana
 ## @brief      STACKFORCE CMake Module for googeltest
 ##
 ## This file is part of the STACKFORCE CMake modules collection
@@ -59,12 +60,12 @@ else()
     ExternalProject_Get_Property(googletest source_dir)
     MESSAGE(STATUS "google source_dir is:\n " ${source_dir} )
 
-
     add_library(libgmock IMPORTED STATIC GLOBAL)
     add_dependencies(libgmock googletest)
 
-    set( GTEST_INCLUDE_GOOGLETEST "${source_dir}/googletest/include/")
-    set( GTEST_INCLUDE_GOOGLEMOCK "${source_dir}/googlemock/include/")
+    set(GTEST_INCLUDE_GOOGLETEST "${source_dir}/googletest/include/")
+    set(GTEST_INCLUDE_GOOGLEMOCK "${source_dir}/googlemock/include/")
+
     # Set gmock properties
     ExternalProject_Get_Property(googletest source_dir binary_dir)
     set_target_properties(libgmock PROPERTIES
@@ -73,7 +74,7 @@ else()
         # This does not work as intended
         #"INTERFACE_INCLUDE_DIRECTORIES" "${GTEST_INCLUDE_GOOGLETEST}"
         #"INTERFACE_INCLUDE_DIRECTORIES" "${GTEST_INCLUDE_GOOGLEMOCK}"
-        )
+    )
 
     include_directories("${GTEST_INCLUDE_GOOGLETEST}")
     include_directories("${GTEST_INCLUDE_GOOGLEMOCK}")
@@ -92,7 +93,7 @@ else()
     # Let other cmake targets know where to find the header files.
     set_property(TARGET libgmock APPEND PROPERTY INTERFACE_INCLUDE_DIRECTORIES
                 "${GTEST_INCLUDE_GOOGLETEST}"
-                "${GTEST_INCLUDE_GOOGLEMOCK}")
-
+                "${GTEST_INCLUDE_GOOGLEMOCK}"
+    )
 
 endif()
