@@ -44,18 +44,9 @@ else()
     # Configure the project for testing
     include(CTest)
 
-    if(WIN32)
-        # Properly disable phtreads when compiling with MinGW
-        # fix #606
-        set(GTEST_GIT_REPOSITORY https://github.com/andoks/googletest.git)
-        # This WIN32 switch can be removed as soon as this commit is in mainline
-        set(GTEST_GIT_TAG 1f40320c1cb94d1c184d4e6308c1fe3cdca827ea)
-        set(GTEST_PATCH_COMMAND echo "add_subdirectory(googlemock)" > CMakeLists.txt)
-    else()
-        set(GTEST_GIT_REPOSITORY https://github.com/google/googletest.git)
-        set(GTEST_GIT_TAG ddb8012eb48bc203aa93dcc2b22c1db516302b29)
-        set(GTEST_PATCH_COMMAND)
-    endif()
+    set(GTEST_GIT_REPOSITORY https://github.com/google/googletest.git)
+    set(GTEST_GIT_TAG release-1.8.0)
+    set(GTEST_PATCH_COMMAND)
 
     ExternalProject_Add(googletest   # Name for custom target
         GIT_REPOSITORY ${GTEST_GIT_REPOSITORY}
