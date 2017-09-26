@@ -35,7 +35,10 @@ include(ExternalProject)
 
 # try to find the serialport library
 set(SERIALPORT_INSTALL_DIR ${PROJECT_BINARY_DIR}/serialport-prefix)
-find_library(SERIALPORT_LIB serialport ${SERIALPORT_INSTALL_DIR}/lib/)
+set(SERIALPORT_LIBS_DIR  ${SERIALPORT_INSTALL_DIR}/src/serialport/.libs)
+set(SERIALPORT_HEADERS_DIR  ${SERIALPORT_INSTALL_DIR}/src/serialport)
+
+find_library(SERIALPORT_LIB serialport ${SERIALPORT_LIBS_DIR})
 
 # extra serial port configuration parameters
 set(SERIALPORT_CONFIG_PARAMS)
@@ -66,12 +69,12 @@ if(NOT SERIALPORT_LIB)
     )
 
     ExternalProject_Get_Property(serialport
-		source_dir binary_dir install_dir build_command configure_command
-	)
+        source_dir binary_dir build_command configure_command
+    )
 
     message(STATUS "Serialport source path: ${source_dir}")
     message(STATUS "Serialport build path: ${binary_dir}")
-    message(STATUS "Serialport library path: ${install_dir}/lib")
+    message(STATUS "Serialport library path: ${SERIALPORT_LIBS_DIR}")
     message(STATUS "Serialport configure command: ${configure_command}")
 
     add_custom_target(libserialport-bootstrap
@@ -83,7 +86,7 @@ else()
     message(STATUS "Serialport: Found")
     message(STATUS "Serialport source path: ${source_dir}")
     message(STATUS "Serialport build path: ${binary_dir}")
-    message(STATUS "Serialport library path: ${install_dir}/lib")
+    message(STATUS "Serialport library path: ${SERIALPORT_LIBS_DIR}")
     add_custom_target(libserialport-bootstrap)
 endif()
 
@@ -97,13 +100,13 @@ add_dependencies(libserialport serialport-bootstrap)
 add_dependencies(libserialport-static serialport-bootstrap)
 
 if(NOT WIN32)
-	set_target_properties(libserialport PROPERTIES
-		IMPORTED_LOCATION "${install_dir}/lib/libserialport.so"
-		INTERFACE_INCLUDE_DIRECTORIES "${install_dir}/include"
-)
+    set_target_properties(libserialport PROPERTIES
+        IMPORTED_LOCATION "${SERIALPORT_LIBS_DIR}/libserialport.so"
+        INTERFACE_INCLUDE_DIRECTORIES "${SERIALPORT_HEADERS_DIR}"
+    )
 endif()
 
 set_target_properties(libserialport-static PROPERTIES
-	IMPORTED_LOCATION "${install_dir}/lib/libserialport.a"
-	INTERFACE_INCLUDE_DIRECTORIES "${install_dir}/include"
+    IMPORTED_LOCATION "${SERIALPORT_LIBS_DIR}/libserialport.a"
+    INTERFACE_INCLUDE_DIRECTORIES "${SERIALPORT_HEADERS_DIR}"
 )
