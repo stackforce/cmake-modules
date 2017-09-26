@@ -90,9 +90,6 @@ else()
     add_custom_target(libserialport-bootstrap)
 endif()
 
-# at configure time this path has to exist for INTERFACE_INCLUDE_DIRECTORIES to work
-file(MAKE_DIRECTORY "${install_dir}/include")
-
 # add the static and dynamic libraries
 add_library(libserialport IMPORTED SHARED GLOBAL)
 add_library(libserialport-static IMPORTED STATIC GLOBAL)
