@@ -1,14 +1,28 @@
+# README
+
+```
+     ___ _____ _   ___ _  _____ ___  ___  ___ ___
+    / __|_   _/_\ / __| |/ / __/ _ \| _ \/ __| __|
+    \__ \ | |/ _ \ (__| ' <| _| (_) |   / (__| _|
+    |___/ |_/_/ \_\___|_|\_\_| \___/|_|_\\___|___|
+    embedded.connectivity.solutions.==============
+```
+
 # Usage
 
-Add this repo as a submodule to `${CMAKE_SOURCE_DIR}/cmake/modules` where `${CMAKE_SOURCE_DIR}` is the location of your CMakeLists.txt file.
+Add this repo as a submodule to `${CMAKE_SOURCE_DIR}/cmake/modules` where `${CMAKE_SOURCE_DIR}` is the location of your project's top level CMakeLists.txt file.
 
-    git submodule add  https://git.stackforce.de/cmake-modules.git cmake/modules
+    git submodule add  https://github.com/stackforce/cmake-modules.git cmake/modules
 
 In your CMakeLists.txt include this line to add the modules to cmake's find path:
 
-    list(APPEND CMAKE_FIND_ROOT_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
+    list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules)
 
-To use a package add this line to your CMakeLists.txt
+To use a find module package (e.g. GLib2) add a line like this to your CMakeLists.txt:
 
-    find_package(gtest)
+    find_package(GLib2)
 
+Other modules like the ColorMessages one that just define some functions have to be included before they can be used:
+
+    include(ColorMessages)
+    colormessage(MORE_IMPORTANT "Searching required external projects...")
