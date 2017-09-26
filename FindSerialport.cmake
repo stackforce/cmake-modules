@@ -78,9 +78,9 @@ if(NOT SERIALPORT_LIB)
     message(STATUS "Serialport configure command: ${configure_command}")
 
     add_custom_target(libserialport-bootstrap
-                      COMMAND ${CMAKE_COMMAND} ${CMAKE_SOURCE_DIR}
-                      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-                      DEPENDS serialport
+        COMMAND ${CMAKE_COMMAND} ${CMAKE_SOURCE_DIR}
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        DEPENDS serialport
     )
 else()
     message(STATUS "Serialport: Found")
