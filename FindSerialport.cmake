@@ -35,7 +35,10 @@ include(ExternalProject)
 
 # try to find the serialport library
 set(SERIALPORT_INSTALL_DIR ${PROJECT_BINARY_DIR}/serialport-prefix)
-find_library(SERIALPORT_LIB serialport ${SERIALPORT_INSTALL_DIR}/lib/)
+set(SERIALPORT_LIBS_DIR  ${SERIALPORT_INSTALL_DIR}/src/serialport/.libs)
+set(SERIALPORT_HEADERS_DIR  ${SERIALPORT_INSTALL_DIR}/src/serialport)
+
+find_library(SERIALPORT_LIB serialport ${SERIALPORT_LIBS_DIR})
 
 # extra serial port configuration parameters
 set(SERIALPORT_CONFIG_PARAMS)
@@ -58,37 +61,34 @@ if(NOT SERIALPORT_LIB)
         GIT_REPOSITORY "git://sigrok.org/libserialport"
         GIT_TAG "0c3f38b81b8968d78806a7a41ed351a870882b5e"
         UPDATE_DISCONNECTED 1
-        CONFIGURE_COMMAND ./autogen.sh && ./configure ${SERIALPORT_CONFIG_PARAMS} --prefix=<INSTALL_DIR>
+        CONFIGURE_COMMAND ./autogen.sh && ./configure ${SERIALPORT_CONFIG_PARAMS}
         BUILD_COMMAND make
         BUILD_IN_SOURCE 1
-		BUILD_ALWAYS 0
-        INSTALL_COMMAND make install
+        BUILD_ALWAYS 0
+        INSTALL_COMMAND ""
     )
 
     ExternalProject_Get_Property(serialport
-		source_dir binary_dir install_dir build_command configure_command
-	)
+        source_dir binary_dir build_command configure_command
+    )
 
     message(STATUS "Serialport source path: ${source_dir}")
     message(STATUS "Serialport build path: ${binary_dir}")
-    message(STATUS "Serialport library path: ${install_dir}/lib")
+    message(STATUS "Serialport library path: ${SERIALPORT_LIBS_DIR}")
     message(STATUS "Serialport configure command: ${configure_command}")
 
     add_custom_target(libserialport-bootstrap
-                      COMMAND ${CMAKE_COMMAND} ${CMAKE_SOURCE_DIR}
-                      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-                      DEPENDS serialport
+        COMMAND ${CMAKE_COMMAND} ${CMAKE_SOURCE_DIR}
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        DEPENDS serialport
     )
 else()
     message(STATUS "Serialport: Found")
     message(STATUS "Serialport source path: ${source_dir}")
     message(STATUS "Serialport build path: ${binary_dir}")
-    message(STATUS "Serialport library path: ${install_dir}/lib")
+    message(STATUS "Serialport library path: ${SERIALPORT_LIBS_DIR}")
     add_custom_target(libserialport-bootstrap)
 endif()
-
-# at configure time this path has to exist for INTERFACE_INCLUDE_DIRECTORIES to work
-file(MAKE_DIRECTORY "${install_dir}/include")
 
 # add the static and dynamic libraries
 add_library(libserialport IMPORTED SHARED GLOBAL)
@@ -97,13 +97,13 @@ add_dependencies(libserialport serialport-bootstrap)
 add_dependencies(libserialport-static serialport-bootstrap)
 
 if(NOT WIN32)
-	set_target_properties(libserialport PROPERTIES
-		IMPORTED_LOCATION "${install_dir}/lib/libserialport.so"
-		INTERFACE_INCLUDE_DIRECTORIES "${install_dir}/include"
-)
+    set_target_properties(libserialport PROPERTIES
+        IMPORTED_LOCATION "${SERIALPORT_LIBS_DIR}/libserialport.so"
+        INTERFACE_INCLUDE_DIRECTORIES "${SERIALPORT_HEADERS_DIR}"
+    )
 endif()
 
 set_target_properties(libserialport-static PROPERTIES
-	IMPORTED_LOCATION "${install_dir}/lib/libserialport.a"
-	INTERFACE_INCLUDE_DIRECTORIES "${install_dir}/include"
+    IMPORTED_LOCATION "${SERIALPORT_LIBS_DIR}/libserialport.a"
+    INTERFACE_INCLUDE_DIRECTORIES "${SERIALPORT_HEADERS_DIR}"
 )
