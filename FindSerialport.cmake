@@ -61,11 +61,11 @@ if(NOT SERIALPORT_LIB)
         GIT_REPOSITORY "git://sigrok.org/libserialport"
         GIT_TAG "0c3f38b81b8968d78806a7a41ed351a870882b5e"
         UPDATE_DISCONNECTED 1
-        CONFIGURE_COMMAND ./autogen.sh && ./configure ${SERIALPORT_CONFIG_PARAMS} --prefix=<INSTALL_DIR>
+        CONFIGURE_COMMAND ./autogen.sh && ./configure ${SERIALPORT_CONFIG_PARAMS}
         BUILD_COMMAND make
         BUILD_IN_SOURCE 1
-		BUILD_ALWAYS 0
-        INSTALL_COMMAND make install
+        BUILD_ALWAYS 0
+        INSTALL_COMMAND ""
     )
 
     ExternalProject_Get_Property(serialport
