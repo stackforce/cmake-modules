@@ -10,7 +10,7 @@
 ## @copyright  STACKFORCE GmbH, Heitersheim, Germany, http://www.stackforce.de
 ## @author     STACKFORCE
 ## @author     Adrian Antonana <adrian.antonana@stackforce.de>
-## @brief      Extra cmake messages
+## @brief      CMake find module to get the mingw std threads project.
 ##
 ## This file is part of the STACKFORCE CMake modules collection
 ## (below "sf cmake modules collection").
@@ -34,7 +34,7 @@ if(CMAKE_CROSSCOMPILING AND WIN32)
 
 	ExternalProject_Add(mingw-std-threads
 		GIT_REPOSITORY https://github.com/meganz/mingw-std-threads.git
-		GIT_TAG master
+		GIT_TAG e85192de49cddf75fa4996364d4098830d30cdb4
 		UPDATE_DISCONNECTED 1
 		CONFIGURE_COMMAND ""
 		BUILD_COMMAND ""
