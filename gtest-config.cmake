@@ -63,6 +63,10 @@ else()
     add_library(libgmock IMPORTED STATIC GLOBAL)
     add_dependencies(libgmock googletest)
 
+    add_library(libgmock_main IMPORTED STATIC GLOBAL)
+    add_dependencies(libgmock_main googletest_main)
+
+
     set(GTEST_INCLUDE_GOOGLETEST "${source_dir}/googletest/include/")
     set(GTEST_INCLUDE_GOOGLEMOCK "${source_dir}/googlemock/include/")
 
@@ -70,6 +74,14 @@ else()
     ExternalProject_Get_Property(googletest source_dir binary_dir)
     set_target_properties(libgmock PROPERTIES
         "IMPORTED_LOCATION" "${binary_dir}/googlemock/libgmock.a"
+        "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
+        # This does not work as intended
+        #"INTERFACE_INCLUDE_DIRECTORIES" "${GTEST_INCLUDE_GOOGLETEST}"
+        #"INTERFACE_INCLUDE_DIRECTORIES" "${GTEST_INCLUDE_GOOGLEMOCK}"
+    )
+    # Set gmock properties
+    set_target_properties(libgmock_main PROPERTIES
+        "IMPORTED_LOCATION" "${binary_dir}/googlemock/libgmock_main.a"
         "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
         # This does not work as intended
         #"INTERFACE_INCLUDE_DIRECTORIES" "${GTEST_INCLUDE_GOOGLETEST}"
@@ -92,6 +104,11 @@ else()
     file(MAKE_DIRECTORY "${GTEST_INCLUDE_GOOGLEMOCK}")
     # Let other cmake targets know where to find the header files.
     set_property(TARGET libgmock APPEND PROPERTY INTERFACE_INCLUDE_DIRECTORIES
+                "${GTEST_INCLUDE_GOOGLETEST}"
+                "${GTEST_INCLUDE_GOOGLEMOCK}"
+    )
+    # Let other cmake targets know where to find the header files.
+    set_property(TARGET libgmock_main APPEND PROPERTY INTERFACE_INCLUDE_DIRECTORIES
                 "${GTEST_INCLUDE_GOOGLETEST}"
                 "${GTEST_INCLUDE_GOOGLEMOCK}"
     )
