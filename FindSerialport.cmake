@@ -55,18 +55,34 @@ endif()
 if(NOT SERIALPORT_LIB)
 
     message(STATUS "Serialport: Not found")
-    message(STATUS "Serialport: Project will be downloaded and built")
 
-    ExternalProject_Add(serialport
-        GIT_REPOSITORY "git://sigrok.org/libserialport"
-        GIT_TAG "0c3f38b81b8968d78806a7a41ed351a870882b5e"
-        UPDATE_DISCONNECTED 1
-        CONFIGURE_COMMAND ./autogen.sh && ./configure ${SERIALPORT_CONFIG_PARAMS}
-        BUILD_COMMAND make
-        BUILD_IN_SOURCE 1
-        BUILD_ALWAYS 0
-        INSTALL_COMMAND ""
-    )
+    if(WIN32)
+        message(STATUS "Serialport: Project will be downloaded and built for Windows.")
+
+        ExternalProject_Add(serialport
+            GIT_REPOSITORY "https://github.com/stackforce/libserialport.git"
+            GIT_TAG "e4bb554e406c1641bf93745d79b9a9c54bd4dce6"
+            UPDATE_DISCONNECTED 1
+            CONFIGURE_COMMAND ./autogen.sh && ./configure ${SERIALPORT_CONFIG_PARAMS}
+            BUILD_COMMAND make
+            BUILD_IN_SOURCE 1
+            BUILD_ALWAYS 0
+            INSTALL_COMMAND ""
+        )
+    else()
+        message(STATUS "Serialport: Project will be downloaded and built Unix.")
+
+        ExternalProject_Add(serialport
+            GIT_REPOSITORY "https://github.com/stackforce/libserialport.git"
+            GIT_TAG "0c3f38b81b8968d78806a7a41ed351a870882b5e"
+            UPDATE_DISCONNECTED 1
+            CONFIGURE_COMMAND ./autogen.sh && ./configure ${SERIALPORT_CONFIG_PARAMS}
+            BUILD_COMMAND make
+            BUILD_IN_SOURCE 1
+            BUILD_ALWAYS 0
+            INSTALL_COMMAND ""
+        )
+    endif()
 
     ExternalProject_Get_Property(serialport
         source_dir binary_dir build_command configure_command
